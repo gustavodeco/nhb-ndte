@@ -15,12 +15,12 @@ partic=[group];
 load(partic)
 % number of brain regions in parcellation
 N_areas=size(subject{1}.dbs80ts,1);
-Tmax=size(subject,2)
+N_subjects = size(subject,2);
 
 %% NDTE computation
-for s=1:Tmax
+for s=1:N_subjects
 
-        TR=0.72;  % Repetition Time (seconds)
+    TR=0.72;  % Repetition Time (seconds)
 
     % Bandpass filter settings
     fnq=1/(2*TR);                 % Nyquist frequency
@@ -30,19 +30,18 @@ for s=1:Tmax
     k=2;                          % 2nd order butterworth filter
     [bfilt,afilt]=butter(k,Wn);   % construct the filter
 
-    BOLD = su{s}.dbs80ts;
+    BOLD = subject{s}.dbs80ts;
     
     for seed=1:80
         BOLD(seed,:)=zscore(detrend(BOLD(seed,:)));
-        su{s}.signal_filt(seed,:) =filtfilt(bfilt,afilt,BOLD(seed,:));
+        subject{s}.signal_filt(seed,:) = filtfilt(bfilt,afilt,BOLD(seed,:));
     end
 
-    XX=su{s}.signal_filt;
+    XX=subject{s}.signal_filt;
 
     N=size(XX,1);
 
-
-    [GCval,GCr,Pval] = ndte_example_surrogates_fixlags_cs(XX,ITER);
+    [GCval,GCr,Pval] = ndte_example_surrogates_fixlags_cs(XX(1:5,:),ITER);
 
     g{s}.GCval=GCval;
     g{s}.GCr=GCr;
