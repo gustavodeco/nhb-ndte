@@ -41,7 +41,7 @@ for s=1:N_subjects
 
     N=size(XX,1);
 
-    [GCval,GCr,Pval] = ndte_example_surrogates_fixlags_cs(XX(1:5,:),ITER);
+    [GCval,GCr,Pval] = ndte_example_surrogates_fixlags_cs(XX,ITER);
 
     g{s}.GCval=GCval;
     g{s}.GCr=GCr;
